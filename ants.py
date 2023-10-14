@@ -189,6 +189,7 @@ class ThrowerAnt(Ant):
     implemented = True
     damage = 1
     lower_bound = 0
+    food_cost=3
     upper_bound = float('inf')
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
 
