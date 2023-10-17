@@ -457,7 +457,6 @@ class TankAnt(ContainerAnt):
             self.ant_contained.action(gamestate)
 # END Problem 9
 
-
 class Water(Place):
     """Water is a place that can only hold waterproof insects."""
 
@@ -466,10 +465,23 @@ class Water(Place):
         its health to 0."""
         # BEGIN Problem 10
         "*** YOUR CODE HERE ***"
+        
+        Place.add_insect(self,insect)
+
+        if insect.is_waterproof == False:
+            insect.reduce_health(insect.health)
         # END Problem 10
 
 # BEGIN Problem 11
-# The ScubaThrower class
+#The ScubaThrower class
+
+class ScubaThrower(ThrowerAnt):
+    name = 'Scuba'
+    implemented = True
+    food_cost = 6
+    is_waterproof = True
+
+
 # END Problem 11
 
 # BEGIN Problem 12
