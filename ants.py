@@ -109,6 +109,7 @@ class Ant(Insect):
     food_cost = 0
     is_container = False
     # ADD CLASS ATTRIBUTES HERE
+    is_doubled= False
 
     def __init__(self, health=1):
         """Create an Insect with a HEALTH quantity."""
@@ -159,6 +160,7 @@ class Ant(Insect):
         """Double this ants's damage, if it has not already been doubled."""
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        self.damage = self.damage*2    
         # END Problem 12
 
 
@@ -485,7 +487,7 @@ class ScubaThrower(ThrowerAnt):
 # END Problem 11
 
 # BEGIN Problem 12
-class QueenAnt(Ant):  # You should change this line
+class QueenAnt(ScubaThrower):  # You should change this line
 # END Problem 12
     """QueenAnt is a ScubaThrower that boosts the damage of all ants behind her."""
 
@@ -493,7 +495,7 @@ class QueenAnt(Ant):  # You should change this line
     food_cost = 7
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 12
-    implemented = False   # Change to True to view in the GUI
+    implemented = True  # Change to True to view in the GUI
     # END Problem 12
 
     def action(self, gamestate):
@@ -502,6 +504,18 @@ class QueenAnt(Ant):  # You should change this line
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        super().action(gamestate)
+        behind = self.place.exit
+        while behind:
+            if behind.ant is not None:
+                if not behind.ant.is_doubled:
+                    behind.ant.double()
+                    behind.ant.is_doubled = True
+                if behind.ant.is_container and behind.ant.ant_contained is not None:
+                    if not behind.ant.ant_contained.is_doubled:
+                        behind.ant.ant_contained.double()
+                        behind.ant.ant_contained.is_doubled = True
+            behind = behind.exit
         # END Problem 12
 
     def reduce_health(self, amount):
@@ -511,10 +525,23 @@ class QueenAnt(Ant):  # You should change this line
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
         # END Problem 12
+        """Reduce health by AMOUNT, and remove the insect from its place if it
+        has no health remaining.
+
+        >>> test_insect = Insect(5)
+        >>> test_insect.reduce_health(2)
+        >>> test_insect.health
+        3
+        """
+        self.health -= amount
+        if self.health <= 0:
+            #self.death_callback()
+            #self.place.remove_insect(self)
+            ants_lose()
 
     def remove_from(self, place):
         # BEGIN Problem 12
-        "*** YOUR CODE HERE ***"
+        return None
         # END Problem 12
 
 
